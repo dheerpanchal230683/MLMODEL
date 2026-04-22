@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Spam Classifier</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 400px;
+            margin: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #4facfe;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #007bff;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>📩 Spam Email Classifier</h2>
+
+        <input type="text" id="message" placeholder="Enter your message...">
+
+        <button onclick="predict()">Check</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function predict() {
+            let msg = document.getElementById("message").value;
+
+            fetch("http://127.0.0.1:5000/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ message: msg })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("result").innerText = "Result: " + data.result;
+                })
+                .catch(err => {
+                    alert("Server not running!");
+                });
+        }
+    </script>
+
+</body>
+
+</html>
